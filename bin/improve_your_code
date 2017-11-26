@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#
+# ImproveYourCode examines Ruby source code for smells.
+# Visit https://wiki.github.com/troessner/improve_your_code for docs etc.
+#
+# Author: Kevin Rutherford
+#
+
+require_relative '../lib/improve_your_code'
+require_relative '../lib/improve_your_code/cli/application'
+
+exit ImproveYourCode::CLI::Application.new(ARGV).execute
