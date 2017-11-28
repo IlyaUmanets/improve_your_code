@@ -3,10 +3,6 @@
 module ImproveYourCode
   module Report
     module Formatter
-      #
-      # Basic formatter that just shows a simple message for each warning,
-      # prepended with the result of the passed-in location formatter.
-      #
       class SimpleWarningFormatter
         def initialize(location_formatter: BlankLocationFormatter)
           @location_formatter = location_formatter
@@ -16,12 +12,10 @@ module ImproveYourCode
           "#{location_formatter.format(warning)}#{warning.base_message}"
         end
 
-        # :improve_your_code:UtilityFunction
         def format_hash(warning)
           warning.yaml_hash
         end
 
-        # :improve_your_code:UtilityFunction
         def format_code_climate_hash(warning)
           CodeClimateFormatter.new(warning).render
         end

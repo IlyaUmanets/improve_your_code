@@ -5,9 +5,6 @@ require_relative '../report/formatter'
 
 module ImproveYourCode
   module Spec
-    #
-    # An rspec matcher that matches when the +actual+ has code smells.
-    #
     class ShouldImproveYourCode
       def initialize(configuration: Configuration::AppConfiguration.default)
         @configuration = configuration

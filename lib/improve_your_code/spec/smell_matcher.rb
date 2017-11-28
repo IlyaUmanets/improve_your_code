@@ -2,9 +2,6 @@
 
 module ImproveYourCode
   module Spec
-    #
-    # Matches a +SmellWarning+ object agains a smell type and hash of attributes.
-    #
     class SmellMatcher
       attr_reader :smell_warning
 

@@ -4,11 +4,6 @@ module ImproveYourCode
   module Report
     module Formatter
       module ProgressFormatter
-        #
-        # Base class for progress formatters.
-        # Is responsible for formatting the progress emitted for each examiner
-        #
-        # @abstract Override {#header, #progress, #footer} to implement a progress formatter.
         class Base
           attr_reader :sources_count
 
@@ -29,9 +24,6 @@ module ImproveYourCode
           end
         end
 
-        #
-        # Shows the status of each source as either a dot (.) or an S
-        #
         class Dots < Base
           NO_WARNINGS_COLOR = :green
           WARNINGS_COLOR = :red
@@ -59,9 +51,6 @@ module ImproveYourCode
           end
         end
 
-        #
-        # Does not show progress
-        #
         class Quiet < Base
           def header
             ''

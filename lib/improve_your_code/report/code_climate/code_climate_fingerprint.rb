@@ -4,7 +4,6 @@ require 'digest'
 
 module ImproveYourCode
   module Report
-    # Generates a string to uniquely identify a smell
     class CodeClimateFingerprint
       NON_IDENTIFYING_PARAMETERS = [:count, :depth].freeze
 
@@ -40,7 +39,6 @@ module ImproveYourCode
       end
 
       def warning_uniquely_identifiable?
-        # These could be identifiable if they had parameters
         ![
           'ManualDispatch',
           'NilCheck'

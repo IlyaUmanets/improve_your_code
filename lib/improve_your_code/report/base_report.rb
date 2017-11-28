@@ -7,23 +7,11 @@ require 'rainbow'
 require_relative 'formatter'
 
 module ImproveYourCode
-  # @public
   module Report
-    #
-    # A report that contains the smells and smell counts following source code analysis.
-    #
-    # @abstract Subclass and override {#show} to create a concrete report class.
-    #
-    # @public
-    #
-    # :improve_your_code:TooManyInstanceVariables: { max_instance_variables: 7 }
     class BaseReport
       NO_WARNINGS_COLOR = :green
       WARNINGS_COLOR = :red
 
-      # @public
-      #
-      # :improve_your_code:BooleanParameter
       def initialize(heading_formatter: Formatter::QuietHeadingFormatter,
                      report_formatter: Formatter,
                      sort_by_issue_count: false,
@@ -38,21 +26,12 @@ module ImproveYourCode
         @warning_formatter   = warning_formatter
       end
 
-      # Add Examiner to report on. The report will output results for all
-      # added examiners.
-      #
-      # @param [ImproveYourCode::Examiner] examiner object to report on
-      #
-      # @public
       def add_examiner(examiner)
         self.total_smell_count += examiner.smells_count
         examiners << examiner
         self
       end
 
-      # Render the report results on STDOUT
-      #
-      # @public
       def show
         raise NotImplementedError
       end

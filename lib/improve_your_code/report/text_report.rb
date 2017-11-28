@@ -4,26 +4,18 @@ require_relative 'base_report'
 
 module ImproveYourCode
   module Report
-    #
-    # Generates a sorted, text summary of smells in examiners
-    #
-    # @public
-    #
     class TextReport < BaseReport
-      # @public
       def initialize(*args)
         super(*args)
 
         print progress_formatter.header
       end
 
-      # @public
       def add_examiner(examiner)
         print progress_formatter.progress examiner
         super(examiner)
       end
 
-      # @public
       def show
         sort_examiners if smells?
         print progress_formatter.footer

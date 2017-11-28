@@ -3,25 +3,13 @@
 require 'forwardable'
 
 module ImproveYourCode
-  #
-  # Reports a warning that a smell has been found.
-  #
-  # @public
-  #
-  # :improve_your_code:TooManyInstanceVariables: { max_instance_variables: 6 }
   class SmellWarning
     include Comparable
     extend Forwardable
 
-    # @public
     attr_reader :context, :lines, :message, :parameters, :smell_detector, :source
     def_delegators :smell_detector, :smell_type
 
-    # @note When using ImproveYourCode's public API, you should not create SmellWarning
-    #   objects yourself. This is why the initializer is not part of the
-    #   public API.
-    #
-    # :improve_your_code:LongParameterList: { max_params: 6 }
     def initialize(smell_detector, context: '', lines:, message:,
                    source:, parameters: {})
       @smell_detector = smell_detector
@@ -34,22 +22,18 @@ module ImproveYourCode
       freeze
     end
 
-    # @public
     def hash
       identifying_values.hash
     end
 
-    # @public
     def <=>(other)
       identifying_values <=> other.identifying_values
     end
 
-    # @public
     def eql?(other)
       (self <=> other).zero?
     end
 
-    # @public
     def to_hash
       stringified_params = Hash[parameters.map { |key, val| [key.to_s, val] }]
       base_hash.merge(stringified_params)

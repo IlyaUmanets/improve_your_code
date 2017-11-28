@@ -9,11 +9,6 @@ require_relative 'formatter/wiki_link_warning_formatter'
 
 module ImproveYourCode
   module Report
-    #
-    # Formatter handling the formatting of the report at large.
-    # Formatting of the individual warnings is handled by the
-    # passed-in warning formatter.
-    #
     module Formatter
       module_function
 

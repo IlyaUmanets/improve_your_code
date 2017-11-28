@@ -5,10 +5,6 @@ require_relative 'smell_matcher'
 
 module ImproveYourCode
   module Spec
-    #
-    # An rspec matcher that matches when the +actual+ has the specified
-    # code smell.
-    #
     class ShouldImproveYourCodeOf
       include RSpec::Matchers::Composable
 
@@ -45,10 +41,6 @@ module ImproveYourCode
       attr_accessor :examiner
 
       def set_failure_messages
-        # We set the failure messages for non-matching smell type unconditionally since we
-        # need that in any case for "failure_message_when_negated" below.
-        # Depending on the existence of matching smell type we check for matching
-        # smell details and then overwrite our failure messages conditionally.
         set_failure_messages_for_smell_type
         set_failure_messages_for_smell_details if matching_smell_types? && !matching_smell_details?
       end
@@ -82,7 +74,6 @@ module ImproveYourCode
           "#{smell_type} with smell details #{smell_details}, but it did"
       end
 
-      # :improve_your_code:FeatureEnvy
       def all_relevant_smell_details_formatted
         matching_smell_types.each_with_object([]).with_index do |(smell, accumulator), index|
           accumulator << "#{index + 1}.)\n"
@@ -96,7 +87,6 @@ module ImproveYourCode
         examiner.description
       end
 
-      # :improve_your_code:UtilityFunction
       def normalize(smell_type_or_class)
         case smell_type_or_class
         when Class

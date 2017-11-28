@@ -5,10 +5,6 @@ require_relative 'simple_warning_formatter'
 module ImproveYourCode
   module Report
     module Formatter
-      #
-      # Formatter that adds a link to the wiki to the basic message from
-      # SimpleWarningFormatter.
-      #
       class WikiLinkWarningFormatter < SimpleWarningFormatter
         BASE_URL_FOR_HELP_LINK = 'https://github.com/troessner/improve_your_code/blob/master/docs/'.freeze
 
@@ -26,7 +22,6 @@ module ImproveYourCode
           "#{BASE_URL_FOR_HELP_LINK}#{class_name_to_param(warning.smell_type)}.md"
         end
 
-        # :improve_your_code:UtilityFunction
         def class_name_to_param(name)
           name.split(/(?=[A-Z])/).join('-')
         end

@@ -7,10 +7,6 @@ require_relative 'smell_matcher'
 
 module ImproveYourCode
   module Spec
-    #
-    # An rspec matcher that matches when the +actual+ has the specified
-    # code smell and no others.
-    #
     class ShouldImproveYourCodeOnlyOf < ShouldImproveYourCodeOf
       def matches?(source)
         matches_examiner?(Examiner.new(source, configuration: configuration))

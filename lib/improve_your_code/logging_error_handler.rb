@@ -6,7 +6,6 @@ require_relative 'errors/garbage_detector_configuration_in_comment_error'
 require_relative 'errors/incomprehensible_source_error'
 
 module ImproveYourCode
-  # Handles errors by logging to stderr
   class LoggingErrorHandler
     def handle(exception)
       warn exception

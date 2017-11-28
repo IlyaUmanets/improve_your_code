@@ -5,7 +5,6 @@ require_relative 'code_climate_configuration'
 
 module ImproveYourCode
   module Report
-    # Generates a hash in the structure specified by the Code Climate engine spec
     class CodeClimateFormatter
       def initialize(warning)
         @warning = warning
