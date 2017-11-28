@@ -7,12 +7,10 @@ ruby RUBY_VERSION
 group :development do
   gem 'activesupport', '>= 4.2'
   gem 'aruba',         '~> 0.14.0'
-  gem 'ataru',         '~> 0.2.0'
   gem 'cucumber',      '~> 3.0'
   gem 'factory_bot',   '~> 4.0'
   gem 'rake',          '~> 12.0'
   gem 'rspec',         '~> 3.0'
-  gem 'yard',          '~> 0.9.5'
 
   if RUBY_VERSION >= '2.3'
     gem 'rubocop',       '~> 0.51.0'
