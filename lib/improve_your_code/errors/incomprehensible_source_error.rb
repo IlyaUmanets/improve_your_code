@@ -4,7 +4,6 @@ require_relative 'base_error'
 
 module ImproveYourCode
   module Errors
-    # Gets raised when ImproveYourCode is unable to process the source
     class IncomprehensibleSourceError < BaseError
       INCOMPREHENSIBLE_SOURCE_TEMPLATE = <<-MESSAGE.freeze
         !!!

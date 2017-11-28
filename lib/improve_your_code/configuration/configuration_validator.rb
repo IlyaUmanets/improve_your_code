@@ -2,13 +2,9 @@
 
 module ImproveYourCode
   module Configuration
-    #
-    # Configuration validator module.
-    #
     module ConfigurationValidator
       private
 
-      # :improve_your_code:UtilityFunction
       def smell_type?(key)
         case key
         when Class
@@ -22,7 +18,6 @@ module ImproveYourCode
         end
       end
 
-      # :improve_your_code:UtilityFunction
       def key_to_smell_detector(key)
         case key
         when Class

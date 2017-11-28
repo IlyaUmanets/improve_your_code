@@ -8,9 +8,6 @@ end
 
 module ImproveYourCode
   module AST
-    # Base class for AST nodes extended with utility methods. Contains some
-    # methods to ease the transition from Sexp to AST::Node.
-    #
     class Node < ::Parser::AST::Node
       def initialize(type, children = [], options = {})
         @comments = options.fetch(:comments, [])
@@ -33,22 +30,6 @@ module ImproveYourCode
         loc && loc.line
       end
 
-      #
-      # Carries out a depth-first traversal of this syntax tree, yielding
-      # every Sexp of type `target_type`. The traversal ignores any node
-      # whose type is listed in the Array `ignoring`.
-      # Takes a block as well.
-      #
-      # target_type - the type to look for, e.g. :send, :block
-      # ignoring - types to ignore, e.g. [:casgn, :class, :module]
-      # blk - block to execute for every hit. Gets passed in the matching element itself.
-      #
-      # Examples:
-      #   context.each_node(:send, [:mlhs]) do |call_node| .... end
-      #   context.each_node(:lvar).any? { |it| it.var_name == 'something' }
-      #
-      # Returns an array with all matching nodes.
-      # TODO: without a block, this doesn't do what one might expect
       def each_node(target_type, ignoring = [], &blk)
         if block_given?
           look_for_type(target_type, ignoring, &blk)
@@ -59,20 +40,6 @@ module ImproveYourCode
         end
       end
 
-      #
-      # Carries out a depth-first traversal of this syntax tree, yielding
-      # every Sexp of type `target_type`. The traversal ignores any node
-      # whose type is listed in the Array `ignoring`, including the top node.
-      # Takes a block as well.
-      #
-      # target_types - the types to look for, e.g. [:send, :block]
-      # ignoring - types to ignore, e.g. [:casgn, :class, :module]
-      # blk - block to execute for every hit
-      #
-      # Examples:
-      #   exp.find_nodes([:block]).flat_map do |elem| ... end
-      #
-      # Returns an array with all matching nodes.
       def find_nodes(target_types, ignoring = [])
         result = []
         look_for_types(target_types, ignoring) { |exp| result << exp }
@@ -84,8 +51,6 @@ module ImproveYourCode
         false
       end
 
-      # :improve_your_code:DuplicateMethodCall { max_calls: 2 } is ok for lines.first
-      # :improve_your_code:FeatureEnvy
       def format_to_ruby
         if location
           lines = location.expression.source.split("\n").map(&:strip)
@@ -99,16 +64,10 @@ module ImproveYourCode
         end
       end
 
-      # Provide length for statement counting. A sexp counts as one statement.
       def length
         1
       end
 
-      # Most nodes represent only one statement (although they can have nested
-      # statements). The special type :begin exists primarily to contain more
-      # statements.
-      #
-      # @return Array of unique outer-level statements contained in this node
       def statements
         [self]
       end
@@ -119,7 +78,6 @@ module ImproveYourCode
 
       protected
 
-      # See ".each_node" for documentation.
       def look_for_type(target_type, ignoring = [], &blk)
         each_sexp do |elem|
           elem.look_for_type(target_type, ignoring, &blk) unless ignoring.include?(elem.type)
@@ -127,7 +85,6 @@ module ImproveYourCode
         yield self if type == target_type
       end
 
-      # See ".find_nodes" for documentation.
       def look_for_types(target_types, ignoring = [], &blk)
         return if ignoring.include?(type)
         if target_types.include? type

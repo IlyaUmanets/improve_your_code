@@ -63,7 +63,6 @@ module ImproveYourCode
         options.argv
       end
 
-      # :improve_your_code:UtilityFunction
       def input_was_piped?
         !$stdin.tty?
       end

@@ -4,17 +4,9 @@ require_relative './configuration_validator'
 
 module ImproveYourCode
   module Configuration
-    #
-    # Hash extension for directory directives.
-    #
     module DirectoryDirectives
       include ConfigurationValidator
 
-      # Returns the directive for a given source.
-      #
-      # @param source_via [String] the source of the code inspected
-      #
-      # @return [Hash | nil] the configuration for the source or nil
       def directive_for(source_via)
         return unless source_via
         source_base_dir = Pathname.new(source_via).dirname
@@ -22,14 +14,6 @@ module ImproveYourCode
         self[hit]
       end
 
-      # Adds a directive and returns self.
-      #
-      # @param path [Pathname] the path
-      # @param config [Hash] the configuration
-      #
-      # @return [self]
-      #
-      # :improve_your_code:NestedIterators: { max_allowed_nesting: 2 }
       def add(path, config)
         with_valid_directory(path) do |directory|
           self[directory] = config.each_with_object({}) do |(key, value), hash|
@@ -42,8 +26,6 @@ module ImproveYourCode
 
       private
 
-      # :improve_your_code:DuplicateMethodCall: { max_calls: 2 }
-      # :improve_your_code:FeatureEnvy
       def best_match_for(source_base_dir)
         keys.
           select { |pathname| source_base_dir.to_s.match(/#{Regexp.escape(pathname.to_s)}/) }.

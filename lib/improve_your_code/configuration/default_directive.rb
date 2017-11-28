@@ -2,9 +2,6 @@
 
 module ImproveYourCode
   module Configuration
-    #
-    # Hash extension for the default directive.
-    #
     module DefaultDirective
       include ConfigurationValidator
 

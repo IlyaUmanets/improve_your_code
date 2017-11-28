@@ -7,15 +7,6 @@ require_relative 'status'
 
 module ImproveYourCode
   module CLI
-    #
-    # Parses the command line
-    #
-    # See {file:docs/Command-Line-Options.md} for details.
-    #
-    # :improve_your_code:TooManyInstanceVariables: { max_instance_variables: 12 }
-    # :improve_your_code:TooManyMethods: { max_methods: 18 }
-    # :improve_your_code:Attribute: { enabled: false }
-    #
     class Options
       attr_reader :argv, :parser, :smells_to_detect
       attr_accessor :colored,
@@ -60,16 +51,10 @@ module ImproveYourCode
 
       private
 
-      # TTY output generally means the output will not undergo further
-      # processing by a machine, but will be viewed by a human. This means
-      # features like coloring can be safely enabled by default.
-      #
-      # :improve_your_code:UtilityFunction
       def tty_output?
         $stdout.tty?
       end
 
-      # :improve_your_code:TooManyStatements: { max_statements: 7 }
       def set_up_parser
         set_banner
         set_configuration_options
@@ -96,7 +81,6 @@ module ImproveYourCode
         BANNER
       end
 
-      # :improve_your_code:TooManyStatements: { max_statements: 6 }
       def set_configuration_options
         parser.separator 'Configuration:'
         parser.on('-c', '--config FILE', 'Read configuration options from FILE') do |file|
@@ -128,7 +112,6 @@ module ImproveYourCode
         end
       end
 
-      # :improve_your_code:TooManyStatements: { max_statements: 7 }
       def set_report_formatting_options
         parser.separator "\nText format options:"
         set_up_color_option
@@ -206,7 +189,6 @@ module ImproveYourCode
         end
       end
 
-      # :improve_your_code:TooManyStatements: { max_statements: 7 }
       def set_utility_options
         parser.separator "\nUtility options:"
         parser.on_tail('-h', '--help', 'Show this message') do

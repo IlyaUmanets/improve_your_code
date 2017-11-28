@@ -4,9 +4,6 @@ require_relative 'method_context'
 
 module ImproveYourCode
   module Context
-    #
-    # A context wrapper for any singleton method definition found in a syntax tree.
-    #
     class SingletonMethodContext < MethodContext
       def singleton_method?
         true
@@ -20,7 +17,6 @@ module ImproveYourCode
         false
       end
 
-      # Was this singleton method defined with an instance method-like syntax?
       def defined_as_instance_method?
         type == :def
       end

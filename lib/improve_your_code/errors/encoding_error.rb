@@ -4,7 +4,6 @@ require_relative 'base_error'
 
 module ImproveYourCode
   module Errors
-    # Gets raised when ImproveYourCode is unable to process the source due to an EncodingError
     class EncodingError < BaseError
       ENCODING_ERROR_TEMPLATE = <<-MESSAGE.freeze
         !!!

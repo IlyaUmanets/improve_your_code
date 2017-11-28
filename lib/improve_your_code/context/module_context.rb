@@ -7,9 +7,6 @@ require_relative 'visibility_tracker'
 
 module ImproveYourCode
   module Context
-    #
-    # A context wrapper for any module found in a syntax tree.
-    #
     class ModuleContext < CodeContext
       attr_reader :visibility_tracker
 
@@ -18,27 +15,15 @@ module ImproveYourCode
         @visibility_tracker = VisibilityTracker.new
       end
 
-      # Register a child context. The child's parent context should be equal to
-      # the current context.
-      #
-      # This makes the current context responsible for setting the child's
-      # visibility.
-      #
-      # @param child [CodeContext] the child context to register
       def append_child_context(child)
         visibility_tracker.set_child_visibility(child)
         super
       end
 
-      # Return the correct class for child method contexts (representing nodes
-      # of type `:def`). For ModuleContext, this is the class that represents
-      # instance methods.
       def method_context_class
         MethodContext
       end
 
-      # Return the correct class for child attribute contexts. For
-      # ModuleContext, this is the class that represents instance attributes.
       def attribute_context_class
         AttributeContext
       end
@@ -55,9 +40,6 @@ module ImproveYourCode
         end
       end
 
-      #
-      # @deprecated use `defined_instance_methods` instead
-      #
       def node_instance_methods
         local_nodes(:def)
       end
@@ -66,14 +48,6 @@ module ImproveYourCode
         CodeComment.new(comment: exp.leading_comment).descriptive?
       end
 
-      # A namespace module is a module (or class) that is only there for namespacing
-      # purposes, and thus contains only nested constants, modules or classes.
-      #
-      # However, if the module is empty, it is not considered a namespace module.
-      #
-      # @return true if the module is a namespace module
-      #
-      # :improve_your_code:FeatureEnvy
       def namespace_module?
         return false if exp.type == :casgn
         children = exp.direct_children

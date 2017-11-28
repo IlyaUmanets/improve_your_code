@@ -4,19 +4,7 @@ require 'pathname'
 
 module ImproveYourCode
   module Configuration
-    # Raised when config file is not properly readable.
     class ConfigFileException < StandardError; end
-    #
-    # ConfigurationFileFinder is responsible for finding ImproveYourCode's configuration.
-    #
-    # There are 3 ways of passing `improve_your_code` a configuration file:
-    # 1. Using the cli "-c" switch
-    # 2. Having a file ending with .improve_your_code either in your current working
-    #    directory or in a parent directory
-    # 3. Having a file ending with .improve_your_code in your HOME directory
-    #
-    # The order in which ConfigurationFileFinder tries to find such a
-    # configuration file is exactly like above.
     module ConfigurationFileFinder
       TOO_MANY_CONFIGURATION_FILES_MESSAGE = <<-MESSAGE.freeze
 
@@ -30,36 +18,14 @@ module ImproveYourCode
       MESSAGE
 
       class << self
-        #
-        # Finds and loads a configuration file from a given path.
-        #
-        # @return [Hash]
-        #
         def find_and_load(path: nil)
           load_from_file(find(path: path))
         end
 
-        #
-        # Tries to find a configuration file via:
-        #   * given path (e.g. via cli switch)
-        #   * ascending down from the current directory
-        #   * looking into the home directory
-        #
-        # @return [File|nil]
-        #
-        # :improve_your_code:ControlParameter
         def find(path: nil, current: Pathname.pwd, home: Pathname.new(Dir.home))
           path || find_by_dir(current) || find_in_dir(home)
         end
 
-        #
-        # Loads a configuration file from a given path.
-        # Raises on invalid data.
-        #
-        # @param path [String]
-        # @return [Hash]
-        #
-        # :improve_your_code:TooManyStatements: { max_statements: 6 }
         def load_from_file(path)
           return {} unless path
           begin
@@ -76,11 +42,6 @@ module ImproveYourCode
 
         private
 
-        #
-        # Recursively traverse directories down to find a configuration file.
-        #
-        # @return [File|nil]
-        #
         def find_by_dir(start)
           start.ascend do |dir|
             file = find_in_dir(dir)
@@ -88,13 +49,6 @@ module ImproveYourCode
           end
         end
 
-        #
-        # Checks a given directory for a configuration file and returns it.
-        # Raises an exception if we find more than one.
-        #
-        # @return [File|nil]
-        #
-        # :improve_your_code:FeatureEnvy
         def find_in_dir(dir)
           found = dir.children.select { |item| item.file? && item.to_s.end_with?('.improve_your_code') }.sort
           if found.size > 1
@@ -104,11 +58,6 @@ module ImproveYourCode
           end
         end
 
-        #
-        # Writes a proper warning message to STDERR and then exits the program.
-        #
-        # @return [undefined]
-        #
         def escalate_too_many_configuration_files(found, directory)
           offensive_files = found.map { |file| "'#{file.basename}'" }.join(', ')
           warn format(TOO_MANY_CONFIGURATION_FILES_MESSAGE, offensive_files, directory)

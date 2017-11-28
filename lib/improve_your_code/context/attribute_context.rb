@@ -4,10 +4,6 @@ require_relative 'code_context'
 
 module ImproveYourCode
   module Context
-    #
-    # A context wrapper for attribute definitions found in a syntax tree.
-    #
-    # :improve_your_code:Attribute
     class AttributeContext < CodeContext
       attr_accessor :visibility
 

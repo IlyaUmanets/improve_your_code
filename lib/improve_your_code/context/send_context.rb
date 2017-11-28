@@ -4,9 +4,6 @@ require_relative 'code_context'
 
 module ImproveYourCode
   module Context
-    #
-    # A context wrapper for method calls found in a syntax tree.
-    #
     class SendContext < CodeContext
       attr_reader :name
 

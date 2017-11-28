@@ -9,37 +9,16 @@ require_relative './excluded_paths'
 
 module ImproveYourCode
   module Configuration
-    #
-    # ImproveYourCode's application configuration.
-    #
-    # @public
     class AppConfiguration
       include ConfigurationValidator
       EXCLUDE_PATHS_KEY = 'exclude_paths'.freeze
 
-      # Instantiate a configuration via given path, or the default path.
-      #
-      # @param path [Pathname] the path to the config file, or nil to use the
-      # default path.
-      #
-      # @return [AppConfiguration]
-      #
-      # @public
       def self.from_path(path = nil)
         allocate.tap do |instance|
           instance.instance_eval { find_and_load(path: path) }
         end
       end
 
-      # Instantiate a configuration by passing everything in.
-      #
-      # Loads the configuration from a hash of the form that is loaded from a
-      # +.improve_your_code+ config file.
-      # @param [Hash] hash The configuration hash to load.
-      #
-      # @return [AppConfiguration]
-      #
-      # @public
       def self.from_hash(hash = {})
         allocate.tap do |instance|
           instance.instance_eval do
@@ -52,12 +31,6 @@ module ImproveYourCode
         new
       end
 
-      # Returns the directive for a given directory.
-      #
-      # @param source_via [String] - the source of the code inspected
-      #
-      # @return [Hash] the directory directive for the source with the default directive
-      #                reverse-merged into it.
       def directive_for(source_via)
         hit = directory_directives.directive_for(source_via)
         hit ? default_directive.merge(hit) : default_directive

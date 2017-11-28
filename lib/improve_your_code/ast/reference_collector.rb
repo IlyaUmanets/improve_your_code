@@ -2,10 +2,6 @@
 
 module ImproveYourCode
   module AST
-    #
-    # Locates references to the current object within a portion
-    # of an abstract syntax tree.
-    #
     class ReferenceCollector
       def initialize(ast)
         @ast = ast

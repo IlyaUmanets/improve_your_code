@@ -8,14 +8,6 @@ require 'forwardable'
 
 module ImproveYourCode
   module Context
-    #
-    # Superclass for all types of source code context. Each instance represents
-    # a code element of some kind, and each provides behaviour relevant to that
-    # code element. CodeContexts form a tree in the same way the code does,
-    # with each context holding a reference to a unique outer context.
-    #
-    # :improve_your_code:TooManyMethods: { max_methods: 19 }
-    # :improve_your_code:TooManyInstanceVariables: { max_instance_variables: 8 }
     class CodeContext
       include Enumerable
       extend Forwardable
@@ -24,9 +16,6 @@ module ImproveYourCode
 
       attr_reader :children, :parent, :exp, :statement_counter
 
-      # Initializes a new CodeContext.
-      #
-      # @param exp [ImproveYourCode::AST::Node] The code described by this context
       def initialize(exp)
         @exp                = exp
         @children           = []
@@ -34,23 +23,11 @@ module ImproveYourCode
         @refs               = AST::ObjectRefs.new
       end
 
-      # Iterate over each AST node (see `ImproveYourCode::AST::Node`) of a given type for the current expression.
-      #
-      # @param type [Symbol] the type of the nodes we are looking for, e.g. :defs.
-      # @yield block that is executed for every node.
-      #
       def local_nodes(type, ignored = [], &blk)
         ignored += [:casgn, :class, :module]
         each_node(type, ignored, &blk)
       end
 
-      # Iterate over `self` and child contexts.
-      # The main difference (among others) to `each_node` is that we are traversing
-      # `CodeContexts` here, not AST nodes (see `ImproveYourCode::AST::Node`).
-      #
-      # @yield block that is executed for every node.
-      # @return [Enumerator]
-      #
       def each(&block)
         return enum_for(:each) unless block_given?
 
@@ -60,59 +37,15 @@ module ImproveYourCode
         end
       end
 
-      # Link the present context to its parent.
-      #
-      # @param parent [ImproveYourCode::AST::Node] The parent context of the code described by this context
-      #
-      # For example, given the following code:
-      #
-      #   class Omg
-      #     def foo(x)
-      #       puts x
-      #     end
-      #   end
-      #
-      # The {ContextBuilder} object first instantiates a {RootContext}, which has no parent.
-      #
-      # Next, it instantiates a {ModuleContext}, with +exp+ looking like this:
-      #
-      #  (class
-      #    (const nil :Omg) nil
-      #    (def :foo
-      #      (args
-      #        (arg :x))
-      #      (send nil :puts
-      #        (lvar :x))))
-      #
-      # It will then call #register_with_parent on the {ModuleContext}, passing
-      # in the parent {RootContext}.
-      #
-      # Finally, {ContextBuilder} will instantiate a {MethodContext}. This time,
-      # +exp+ is:
-      #
-      #   (def :foo
-      #     (args
-      #       (arg :x))
-      #     (send nil :puts
-      #       (lvar :x)))
-      #
-      # Then it will call #register_with_parent on the {MethodContext}, passing
-      # in the parent {ModuleContext}.
       def register_with_parent(parent)
         @parent = parent.append_child_context(self) if parent
       end
 
-      # Register a context as a child context of this context. This is
-      # generally used by a child context to register itself with its parent.
-      #
-      # @param child [CodeContext] the child context to register
       def append_child_context(child)
         children << child
         self
       end
 
-      # :improve_your_code:TooManyStatements: { max_statements: 6 }
-      # :improve_your_code:FeatureEnvy
       def record_call_to(exp)
         receiver = exp.receiver
         type = receiver ? receiver.type : :self
@@ -161,7 +94,6 @@ module ImproveYourCode
       end
 
       def apply_current_visibility(_current_visibility)
-        # Nothing to do by default
       end
 
       private

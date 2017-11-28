@@ -4,8 +4,6 @@ require_relative 'base_error'
 
 module ImproveYourCode
   module Errors
-    # Gets raised when trying to configure a detector with an option
-    # which is unknown to it.
     class BadDetectorConfigurationKeyInCommentError < BaseError
       UNKNOWN_SMELL_DETECTOR_MESSAGE = <<-MESSAGE.freeze
 

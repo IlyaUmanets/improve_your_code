@@ -4,8 +4,6 @@ require_relative 'base_error'
 
 module ImproveYourCode
   module Errors
-    # Gets raised when trying to use a configuration for a detector
-    # that can't be parsed into a hash.
     class GarbageDetectorConfigurationInCommentError < BaseError
       BAD_DETECTOR_CONFIGURATION_MESSAGE = <<-MESSAGE.freeze
 

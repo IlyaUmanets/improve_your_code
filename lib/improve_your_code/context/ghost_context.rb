@@ -5,10 +5,6 @@ require_relative 'singleton_method_context'
 
 module ImproveYourCode
   module Context
-    # Semi-transparent context to represent a metaclass while building the
-    # context tree. This context will not be part of the resulting tree, but
-    # will track context and visibility separately while building is in
-    # progress.
     class GhostContext < ModuleContext
       attr_reader :children
 
@@ -22,15 +18,10 @@ module ImproveYourCode
         real_parent
       end
 
-      # Return the correct class for child method contexts (representing nodes
-      # of type `:def`). For GhostContext, this is the class that represents
-      # singleton methods.
       def method_context_class
         SingletonMethodContext
       end
 
-      # Return the correct class for child attribute contexts. For
-      # GhostContext, this is the class that represents singleton attributes.
       def attribute_context_class
         SingletonAttributeContext
       end

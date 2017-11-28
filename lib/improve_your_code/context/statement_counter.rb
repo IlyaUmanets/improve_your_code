@@ -4,7 +4,6 @@ require_relative '../ast/node'
 
 module ImproveYourCode
   module Context
-    # Responsible for counting the statements in a `CodeContext`.
     class StatementCounter
       attr_reader :value
 
