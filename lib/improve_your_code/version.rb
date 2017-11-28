@@ -8,6 +8,6 @@ module ImproveYourCode
   # @public
   module Version
     # @public
-    STRING = '4.7.3'.freeze
+    STRING = '1.0.0'.freeze
   end
 end

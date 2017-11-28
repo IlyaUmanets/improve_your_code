@@ -9,11 +9,6 @@ require_relative 'command/todo_list_command'
 
 module ImproveYourCode
   module CLI
-    #
-    # Represents an instance of a ImproveYourCode application.
-    # This is the entry point for all invocations of ImproveYourCode from the
-    # command line.
-    #
     class Application
       attr_reader :configuration
 
@@ -74,8 +69,6 @@ module ImproveYourCode
       end
 
       def no_source_files_given?
-        # At this point we have deleted all options from argv. The only remaining entries
-        # are paths to the source files. If argv is empty, this means that no files were given.
         argv.empty?
       end
 

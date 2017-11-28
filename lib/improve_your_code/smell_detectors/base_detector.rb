@@ -6,30 +6,16 @@ require_relative '../smell_configuration'
 
 module ImproveYourCode
   module SmellDetectors
-    #
-    # Shared responsibilities of all smell detectors.
-    #
-    # See
-    #   - {file:docs/Basic-Smell-Options.md}
-    #   - {file:docs/Code-Smells.md}
-    #   - {file:README.md}
-    # for details.
-    #
-    # :improve_your_code:UnusedPrivateMethod: { exclude: [ smell_warning ] }
-    # :improve_your_code:TooManyMethods: { max_methods: 18 }
     class BaseDetector
       attr_reader :config
-      # The name of the config field that lists the names of code contexts
-      # that should not be checked. Add this field to the config for each
-      # smell that should ignore this code element.
       EXCLUDE_KEY = 'exclude'.freeze
-
-      # The default value for the +EXCLUDE_KEY+ if it isn't specified
-      # in any configuration file.
       DEFAULT_EXCLUDE_SET = [].freeze
 
       def initialize(configuration: {}, context: nil)
-        @config = SmellConfiguration.new self.class.default_config.merge(configuration)
+        @config = SmellConfiguration.new(
+          self.class.default_config.merge(configuration)
+        )
+
         @context = context
       end
 
@@ -78,7 +64,6 @@ module ImproveYourCode
         ctx.config_for(self.class)
       end
 
-      # :improve_your_code:FeatureEnvy
       def smell_warning(options = {})
         context = options.fetch(:context)
         exp = context.exp
@@ -99,7 +84,6 @@ module ImproveYourCode
           [:def, :defs]
         end
 
-        # :improve_your_code:UtilityFunction
         def default_config
           {
             SmellConfiguration::ENABLED_KEY => true,
@@ -111,42 +95,19 @@ module ImproveYourCode
           descendants << subclass
         end
 
-        #
-        # Returns all descendants of BaseDetector
-        #
-        # @return [Array<Constant>], e.g.:
-        #   [ImproveYourCode::SmellDetectors::Attribute,
-        #    ImproveYourCode::SmellDetectors::BooleanParameter,
-        #    ImproveYourCode::SmellDetectors::ClassVariable,
-        #    ...]
-        #
         def descendants
           @descendants ||= []
         end
 
-        #
-        # @param detector [String] the detector in question, e.g. 'DuplicateMethodCall'
-        # @return [Boolean]
-        #
         def valid_detector?(detector)
           descendants.map { |descendant| descendant.to_s.split('::').last }.
             include?(detector)
         end
 
-        #
-        # Transform a detector name to the corresponding constant.
-        # Note that we assume a valid name - exceptions are not handled here.
-        #
-        # @param detector_name [String] the detector in question, e.g. 'DuplicateMethodCall'
-        # @return [SmellDetector] - this will return the class, not an instance
-        #
         def to_detector(detector_name)
           SmellDetectors.const_get detector_name
         end
 
-        #
-        # @return [Set<Symbol>] - all configuration keys that are available for this detector
-        #
         def configuration_keys
           Set.new(default_config.keys.map(&:to_sym))
         end

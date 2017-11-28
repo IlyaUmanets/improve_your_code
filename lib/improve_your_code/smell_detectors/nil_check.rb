@@ -4,10 +4,6 @@ require_relative 'base_detector'
 
 module ImproveYourCode
   module SmellDetectors
-    # Checking for nil is a special kind of type check, and therefore a case of
-    # SimulatedPolymorphism.
-    #
-    # See {file:docs/Nil-Check.md} for details.
     class NilCheck < BaseDetector
       def sniff
         lines = detect_nodes.map(&:line)
@@ -30,9 +26,6 @@ module ImproveYourCode
         finders.flat_map(&:smelly_nodes)
       end
 
-      #
-      # A base class that allows to work on all nodes of a certain type.
-      #
       class NodeFinder
         def initialize(ctx, type, detector)
           @nodes = ctx.local_nodes(type)
@@ -52,7 +45,6 @@ module ImproveYourCode
 
       private_constant :NodeFinder
 
-      # Detect 'call' nodes which perform a nil check.
       module NilCallNodeDetector
         module_function
 
@@ -81,7 +73,6 @@ module ImproveYourCode
         end
       end
 
-      # Detect 'when' statements that perform a nil check.
       module NilWhenNodeDetector
         module_function
 
@@ -90,8 +81,6 @@ module ImproveYourCode
         end
       end
 
-      # Detect safe navigation. Returns true for all nodes, since all :csend
-      # nodes are considered smelly.
       module SafeNavigationNodeDetector
         module_function
 

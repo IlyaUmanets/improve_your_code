@@ -4,38 +4,13 @@ require_relative 'base_detector'
 
 module ImproveYourCode
   module SmellDetectors
-    #
-    # A Data Clump occurs when the same two or three items frequently
-    # appear together in classes and parameter lists, or when a group
-    # of instance variable names start or end with similar substrings.
-    #
-    # The recurrence of the items often means there is duplicate code
-    # spread around to handle them. There may be an abstraction missing
-    # from the code, making the system harder to understand.
-    #
-    # Currently ImproveYourCode looks for a group of two or more parameters with
-    # the same names that are expected by three or more methods of a class.
-    #
-    # See {file:docs/Data-Clump.md} for details.
     class DataClump < BaseDetector
-      #
-      # The name of the config field that sets the maximum allowed
-      # copies of any clump. No group of common parameters will be
-      # reported as a DataClump unless there are more than this many
-      # methods containing those parameters.
-      #
       MAX_COPIES_KEY = 'max_copies'.freeze
       DEFAULT_MAX_COPIES = 2
-
-      #
-      # The name of the config field that sets the minimum clump
-      # size. No group of common parameters will be reported as
-      # a DataClump unless it contains at least this many parameters.
-      #
       MIN_CLUMP_SIZE_KEY = 'min_clump_size'.freeze
       DEFAULT_MIN_CLUMP_SIZE = 2
 
-      def self.contexts # :nodoc:
+      def self.contexts
         [:class, :module]
       end
 
@@ -45,11 +20,6 @@ module ImproveYourCode
           MIN_CLUMP_SIZE_KEY => DEFAULT_MIN_CLUMP_SIZE)
       end
 
-      #
-      # Checks the given class or module for multiple identical parameter sets.
-      #
-      # @return [Array<SmellWarning>]
-      #
       def sniff
         MethodGroup.new(context, min_clump_size, max_copies).clumps.map do |clump, methods|
           methods_length = methods.length
@@ -65,7 +35,6 @@ module ImproveYourCode
         end
       end
 
-      # @private
       def self.print_clump(clump)
         "[#{clump.map { |parameter| "'#{parameter}'" }.join(', ')}]"
       end
@@ -82,8 +51,6 @@ module ImproveYourCode
     end
   end
 
-  # Represents a group of methods
-  # @private
   class MethodGroup
     def initialize(ctx, min_clump_size, max_copies)
       @min_clump_size = min_clump_size
@@ -101,7 +68,6 @@ module ImproveYourCode
       end.uniq
     end
 
-    # :improve_your_code:UtilityFunction
     def common_argument_names_for(methods)
       methods.map(&:arg_names).inject(:&)
     end
@@ -121,8 +87,6 @@ module ImproveYourCode
     attr_reader :candidate_methods, :max_copies, :min_clump_size
   end
 
-  # A method definition and a copy of its parameters
-  # @private
   class CandidateMethod
     extend Forwardable
 
@@ -133,7 +97,6 @@ module ImproveYourCode
     end
 
     def arg_names
-      # TODO: Is all this sorting still needed?
       @arg_names ||= defn.arg_names.compact.sort
     end
 
