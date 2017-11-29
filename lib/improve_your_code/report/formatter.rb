@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'code_climate/code_climate_formatter'
 require_relative 'formatter/heading_formatter'
 require_relative 'formatter/location_formatter'
 require_relative 'formatter/progress_formatter'

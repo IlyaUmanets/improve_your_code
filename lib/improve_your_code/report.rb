@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'report/code_climate'
 require_relative 'report/text_report'
 require_relative 'report/formatter'
 
 module ImproveYourCode
   module Report
     REPORT_CLASSES = {
-      text: TextReport,
-      code_climate: CodeClimateReport
+      text: TextReport
     }.freeze
 
     LOCATION_FORMATTERS = {

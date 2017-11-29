@@ -4,7 +4,6 @@ require 'pathname'
 
 module ImproveYourCode
   module Configuration
-    class ConfigFileException < StandardError; end
     module ConfigurationFileFinder
       TOO_MANY_CONFIGURATION_FILES_MESSAGE = <<-MESSAGE.freeze
 

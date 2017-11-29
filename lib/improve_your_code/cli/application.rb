@@ -5,7 +5,6 @@ require_relative 'status'
 require_relative '../configuration/app_configuration'
 require_relative '../source/source_locator'
 require_relative 'command/report_command'
-require_relative 'command/todo_list_command'
 
 module ImproveYourCode
   module CLI
@@ -30,20 +29,14 @@ module ImproveYourCode
 
       def configure_options(argv)
         Options.new(argv).parse
-      rescue OptionParser::InvalidOption => error
-        warn "Error: #{error}"
-        exit Status::DEFAULT_ERROR_EXIT_CODE
       end
 
       def configure_app_configuration(config_file)
         Configuration::AppConfiguration.from_path(config_file)
-      rescue ImproveYourCode::Configuration::ConfigFileException => error
-        warn "Error: #{error}"
-        exit Status::DEFAULT_ERROR_EXIT_CODE
       end
 
       def command_class
-        options.generate_todo_list ? Command::TodoListCommand : Command::ReportCommand
+        Command::ReportCommand
       end
 
       def sources

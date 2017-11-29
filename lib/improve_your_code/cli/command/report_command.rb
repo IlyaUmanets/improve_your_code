@@ -2,7 +2,6 @@
 
 require_relative 'base_command'
 require_relative '../../examiner'
-require_relative '../../logging_error_handler'
 require_relative '../../report'
 
 module ImproveYourCode
@@ -25,8 +24,7 @@ module ImproveYourCode
           sources.each do |source|
             reporter.add_examiner Examiner.new(source,
                                                filter_by_smells: smell_names,
-                                               configuration: configuration,
-                                               error_handler: LoggingErrorHandler.new)
+                                               configuration: configuration)
           end
         end
 

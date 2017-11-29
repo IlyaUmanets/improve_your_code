@@ -2,8 +2,6 @@
 
 require_relative 'context_builder'
 require_relative 'detector_repository'
-require_relative 'errors/incomprehensible_source_error'
-require_relative 'errors/encoding_error'
 require_relative 'source/source_code'
 
 module ImproveYourCode
@@ -55,21 +53,6 @@ module ImproveYourCode
         examine_tree
       else
         SmellDetectors::Syntax.smells_from_source(source)
-      end
-    rescue StandardError => exception
-      wrapper = wrap_exception exception
-      raise wrapper unless @error_handler.handle wrapper
-      []
-    end
-
-    def wrap_exception(exception)
-      case exception
-      when Errors::BaseError
-        exception
-      when EncodingError
-        Errors::EncodingError.new origin: origin, original_exception: exception
-      else
-        Errors::IncomprehensibleSourceError.new origin: origin, original_exception: exception
       end
     end
 
