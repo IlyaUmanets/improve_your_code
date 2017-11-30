@@ -50,20 +50,6 @@ module ImproveYourCode
             Rainbow('S').color(WARNINGS_COLOR)
           end
         end
-
-        class Quiet < Base
-          def header
-            ''
-          end
-
-          def progress(_examiner)
-            ''
-          end
-
-          def footer
-            ''
-          end
-        end
       end
     end
   end

@@ -13,6 +13,7 @@ module ImproveYourCode
       def klass_for(type)
         klass_map[type] ||= Class.new(Node).tap do |klass|
           extension = extension_map[type]
+
           klass.send :include, extension if extension
         end
       end
@@ -20,6 +21,7 @@ module ImproveYourCode
       def extension_map
         @extension_map ||=
           begin
+            
             assoc = SexpExtensions.constants.map do |const|
               [
                 const.to_s.sub(/Node$/, '').downcase.to_sym,

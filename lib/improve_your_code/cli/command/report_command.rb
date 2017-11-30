@@ -7,10 +7,6 @@ require_relative '../../report'
 module ImproveYourCode
   module CLI
     module Command
-      #
-      # A command to collect smells from a set of sources and write them out in
-      # text report format.
-      #
       class ReportCommand < BaseCommand
         def execute
           populate_reporter_with_smells
@@ -22,14 +18,12 @@ module ImproveYourCode
 
         def populate_reporter_with_smells
           sources.each do |source|
-            reporter.add_examiner Examiner.new(source,
-                                               filter_by_smells: smell_names,
-                                               configuration: configuration)
+            reporter.add_examiner Examiner.new(source)
           end
         end
 
         def result_code
-          reporter.smells? ? options.failure_exit_code : options.success_exit_code
+          reporter.smells? ? 2 : 0
         end
 
         def reporter
@@ -43,7 +37,7 @@ module ImproveYourCode
         end
 
         def report_class
-          Report.report_class(options.report_format)
+          Report.report_class(:text)
         end
 
         def warning_formatter
@@ -51,23 +45,23 @@ module ImproveYourCode
         end
 
         def warning_formatter_class
-          Report.warning_formatter_class(options.show_links ? :wiki_links : :simple)
+          Report.warning_formatter_class(:wiki_links)
         end
 
         def location_formatter
-          Report.location_formatter(options.location_format)
+          Report.location_formatter(:numbers)
         end
 
         def heading_formatter
-          Report.heading_formatter(options.show_empty ? :verbose : :quiet)
+          Report.heading_formatter(:quiet)
         end
 
         def progress_formatter
-          Report.progress_formatter(options.progress_format)
+          Report.progress_formatter(:dots)
         end
 
         def sort_by_issue_count
-          options.sorting == :smelliness
+          false
         end
       end
     end

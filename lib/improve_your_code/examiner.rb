@@ -13,14 +13,11 @@ module ImproveYourCode
     end
 
     def initialize(source,
-                   filter_by_smells: [],
-                   configuration: Configuration::AppConfiguration.default,
                    detector_repository_class: DetectorRepository,
                    error_handler: NullHandler.new)
       @source              = Source::SourceCode.from(source)
-      @smell_types         = detector_repository_class.eligible_smell_types(filter_by_smells)
-      @detector_repository = detector_repository_class.new(smell_types: @smell_types,
-                                                           configuration: configuration.directive_for(description))
+      @smell_types         = detector_repository_class.eligible_smell_types
+      @detector_repository = detector_repository_class.new(smell_types: @smell_types)
       @error_handler       = error_handler
     end
 

@@ -7,18 +7,16 @@ module ImproveYourCode
       # Base class for all commands
       #
       class BaseCommand
-        def initialize(options:, sources:, configuration:)
-          @options = options
+        def initialize(sources:)
           @sources = sources
-          @configuration = configuration
         end
 
         private
 
-        attr_reader :options, :sources, :configuration
+        attr_reader :sources
 
         def smell_names
-          @smell_names ||= options.smells_to_detect
+          @smell_names ||= []
         end
       end
     end

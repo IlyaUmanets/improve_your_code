@@ -23,12 +23,6 @@ module ImproveYourCode
         end
       end
 
-      class VerboseHeadingFormatter < HeadingFormatterBase
-        def show_header?(_examiner)
-          true
-        end
-      end
-
       class QuietHeadingFormatter < HeadingFormatterBase
         def show_header?(examiner)
           examiner.smelly?

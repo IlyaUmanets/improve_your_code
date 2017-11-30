@@ -11,9 +11,9 @@ module ImproveYourCode
       EXCLUDE_KEY = 'exclude'.freeze
       DEFAULT_EXCLUDE_SET = [].freeze
 
-      def initialize(configuration: {}, context: nil)
+      def initialize(context: nil)
         @config = SmellConfiguration.new(
-          self.class.default_config.merge(configuration)
+          self.class.default_config
         )
 
         @context = context
@@ -25,7 +25,6 @@ module ImproveYourCode
 
       def run
         return [] unless enabled?
-        return [] if exception?
 
         sniff
       end
