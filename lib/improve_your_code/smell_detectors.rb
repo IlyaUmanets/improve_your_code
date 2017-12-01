@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'smell_detectors/class_variable'
-require_relative 'smell_detectors/data_clump'
 require_relative 'smell_detectors/long_parameter_list'
-require_relative 'smell_detectors/nil_check'
-require_relative 'smell_detectors/syntax'
 require_relative 'smell_detectors/too_many_instance_variables'
 require_relative 'smell_detectors/too_many_constants'
 require_relative 'smell_detectors/too_many_methods'
 require_relative 'smell_detectors/too_many_statements'
 require_relative 'smell_detectors/uncommunicative_method_name'
 require_relative 'smell_detectors/uncommunicative_module_name'
-require_relative 'smell_detectors/uncommunicative_parameter_name'
 require_relative 'smell_detectors/uncommunicative_variable_name'
 require_relative 'smell_detectors/unused_parameters'
 require_relative 'smell_detectors/unused_private_method'

@@ -6,19 +6,9 @@ require_relative 'source/source_code'
 
 module ImproveYourCode
   class Examiner
-    class NullHandler
-      def handle(_exception)
-        false
-      end
-    end
-
-    def initialize(source,
-                   detector_repository_class: DetectorRepository,
-                   error_handler: NullHandler.new)
-      @source              = Source::SourceCode.from(source)
-      @smell_types         = detector_repository_class.eligible_smell_types
-      @detector_repository = detector_repository_class.new(smell_types: @smell_types)
-      @error_handler       = error_handler
+    def initialize(source)
+      @source = Source::SourceCode.from(source)
+      @smell_types = DetectorRepository.eligible_smell_types
     end
 
     def origin
@@ -43,7 +33,11 @@ module ImproveYourCode
 
     private
 
-    attr_reader :source, :detector_repository
+    attr_reader :source
+
+    def detector_repository
+      DetectorRepository.new(smell_types: @smell_types)
+    end
 
     def run
       if source.valid_syntax? && syntax_tree

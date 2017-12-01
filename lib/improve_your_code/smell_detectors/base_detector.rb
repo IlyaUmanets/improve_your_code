@@ -8,59 +8,49 @@ module ImproveYourCode
   module SmellDetectors
     class BaseDetector
       attr_reader :config
+
       EXCLUDE_KEY = 'exclude'.freeze
-      DEFAULT_EXCLUDE_SET = [].freeze
 
       def initialize(context: nil)
-        @config = SmellConfiguration.new(
-          self.class.default_config
-        )
-
+        @config = SmellConfiguration.new(self.class.default_config)
         @context = context
+      end
+
+      def self.todo_configuration_for(smells)
+        default_exclusions = default_config.fetch EXCLUDE_KEY
+        exclusions = default_exclusions + smells.map(&:context)
+
+        { smell_type => { EXCLUDE_KEY => exclusions.uniq } }
+      end
+
+      def run
+        sniff
       end
 
       def smell_type
         self.class.smell_type
       end
 
-      def run
-        return [] unless enabled?
-
-        sniff
-      end
-
-      def self.todo_configuration_for(smells)
-        default_exclusions = default_config.fetch 'exclude'
-        exclusions = default_exclusions + smells.map(&:context)
-        { smell_type => { 'exclude' => exclusions.uniq } }
-      end
-
       private
 
       attr_reader :context
 
-      def expression
-        @expression ||= context.exp
+      def config_for(ctx)
+        ctx.config_for(self.class)
       end
 
-      def source_line
-        @line ||= expression.line
+      def enabled?
+        config.enabled? && config_for(context)[
+          SmellConfiguration::ENABLED_KEY
+        ] != false
       end
 
       def exception?
         context.matches?(value(EXCLUDE_KEY, context))
       end
 
-      def enabled?
-        config.enabled? && config_for(context)[SmellConfiguration::ENABLED_KEY] != false
-      end
-
-      def value(key, ctx)
-        config_for(ctx)[key] || config.value(key, ctx)
-      end
-
-      def config_for(ctx)
-        ctx.config_for(self.class)
+      def expression
+        @expression ||= context.exp
       end
 
       def smell_warning(options = {})
@@ -74,19 +64,27 @@ module ImproveYourCode
                          parameters: options.fetch(:parameters, {}))
       end
 
+      def source_line
+        @line ||= expression.line
+      end
+
+      def value(key, ctx)
+        config_for(ctx)[key] || config.value(key, ctx)
+      end
+
       class << self
         def smell_type
           @smell_type ||= name.split(/::/).last
         end
 
         def contexts
-          [:def, :defs]
+          %i[def defs]
         end
 
         def default_config
           {
             SmellConfiguration::ENABLED_KEY => true,
-            EXCLUDE_KEY => DEFAULT_EXCLUDE_SET.dup
+            EXCLUDE_KEY => []
           }
         end
 
@@ -99,8 +97,8 @@ module ImproveYourCode
         end
 
         def valid_detector?(detector)
-          descendants.map { |descendant| descendant.to_s.split('::').last }.
-            include?(detector)
+          descendants.map { |descendant| descendant.to_s.split('::').last }
+                     .include?(detector)
         end
 
         def to_detector(detector_name)

@@ -4,7 +4,6 @@ require_relative 'formatter/heading_formatter'
 require_relative 'formatter/location_formatter'
 require_relative 'formatter/progress_formatter'
 require_relative 'formatter/simple_warning_formatter'
-require_relative 'formatter/wiki_link_warning_formatter'
 
 module ImproveYourCode
   module Report
@@ -18,7 +17,7 @@ module ImproveYourCode
       def header(examiner)
         count = examiner.smells_count
         result = Rainbow("#{examiner.description} -- ").cyan +
-          Rainbow("#{count} warning").yellow
+                 Rainbow("#{count} warning").yellow
         result += Rainbow('s').yellow unless count == 1
         result
       end

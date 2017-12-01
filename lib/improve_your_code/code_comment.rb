@@ -43,10 +43,10 @@ module ImproveYourCode
     attr_reader :original_comment, :source, :line
 
     def sanitized_comment
-      @sanitized_comment ||= original_comment.
-        gsub(CONFIGURATION_REGEX, '').
-        gsub(SANITIZE_REGEX, ' ').
-        strip
+      @sanitized_comment ||= original_comment
+                             .gsub(CONFIGURATION_REGEX, '')
+                             .gsub(SANITIZE_REGEX, ' ')
+                             .strip
     end
   end
 end

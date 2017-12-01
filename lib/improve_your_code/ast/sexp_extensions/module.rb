@@ -79,7 +79,7 @@ module ImproveYourCode
         # @return an array of directly visible children of the module
         #
         def direct_children
-          contents = children.last or return []
+          (contents = children.last) || (return [])
           contents.statements
         end
       end
@@ -93,7 +93,9 @@ module ImproveYourCode
       module ClassNode
         include ModuleNodeBase
 
-        def superclass() children[1] end
+        def superclass
+          children[1]
+        end
       end
 
       # Utility methods for constant assignment (:casgn) nodes.

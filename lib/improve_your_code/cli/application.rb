@@ -7,7 +7,7 @@ module ImproveYourCode
   module CLI
     class Application
       def initialize
-        @command = command_class.new(sources: sources)
+        @command = Command::ReportCommand.new(sources: sources)
       end
 
       def execute
@@ -21,10 +21,6 @@ module ImproveYourCode
 
       def enable_rainbow
         Rainbow.enabled = $stdout.tty?
-      end
-
-      def command_class
-        Command::ReportCommand
       end
 
       def sources

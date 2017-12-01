@@ -12,7 +12,7 @@ module ImproveYourCode
       include Enumerable
       extend Forwardable
       delegate each_node: :exp
-      delegate [:name, :type] => :exp
+      delegate %i[name type] => :exp
 
       attr_reader :children, :parent, :exp, :statement_counter
 
@@ -24,7 +24,7 @@ module ImproveYourCode
       end
 
       def local_nodes(type, ignored = [], &blk)
-        ignored += [:casgn, :class, :module]
+        ignored += %i[casgn class module]
         each_node(type, ignored, &blk)
       end
 
@@ -78,7 +78,8 @@ module ImproveYourCode
 
       def config_for(detector_class)
         parent_config_for(detector_class).merge(
-          configuration_via_code_commment[detector_class.smell_type] || {})
+          configuration_via_code_commment[detector_class.smell_type] || {}
+        )
       end
 
       def number_of_statements
@@ -93,17 +94,19 @@ module ImproveYourCode
         false
       end
 
-      def apply_current_visibility(_current_visibility)
-      end
+      def apply_current_visibility(_current_visibility); end
 
       private
 
       attr_reader :refs
 
       def configuration_via_code_commment
-        @configuration_via_code_commment ||= CodeComment.new(comment: full_comment,
-                                                             line: exp.line,
-                                                             source: exp.source).config
+        @configuration_via_code_commment ||=
+          CodeComment.new(
+            comment: full_comment,
+            line: exp.line,
+            source: exp.source
+          ).config
       end
 
       def full_comment

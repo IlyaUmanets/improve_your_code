@@ -21,7 +21,6 @@ module ImproveYourCode
       def extension_map
         @extension_map ||=
           begin
-            
             assoc = SexpExtensions.constants.map do |const|
               [
                 const.to_s.sub(/Node$/, '').downcase.to_sym,

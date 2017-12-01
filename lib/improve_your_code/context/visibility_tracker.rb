@@ -3,7 +3,7 @@
 module ImproveYourCode
   module Context
     class VisibilityTracker
-      VISIBILITY_MODIFIERS = [:private, :public, :protected, :module_function].freeze
+      VISIBILITY_MODIFIERS = %i[private public protected module_function].freeze
       VISIBILITY_MAP = { public_class_method: :public, private_class_method: :private }.freeze
 
       def initialize

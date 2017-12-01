@@ -5,7 +5,7 @@ module ImproveYourCode
     module SexpExtensions
       # Utility methods for :send nodes.
       module SendNode
-        ATTR_DEFN_METHODS = [:attr_writer, :attr_accessor].freeze
+        ATTR_DEFN_METHODS = %i[attr_writer attr_accessor].freeze
 
         def receiver
           children.first
@@ -30,7 +30,7 @@ module ImproveYourCode
         def module_creation_receiver?
           receiver &&
             receiver.type == :const &&
-            [:Class, :Struct].include?(receiver.simple_name)
+            %i[Class Struct].include?(receiver.simple_name)
         end
 
         def object_creation_call?

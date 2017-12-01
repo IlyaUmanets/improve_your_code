@@ -27,19 +27,22 @@ module ImproveYourCode
 
       def self.from(source)
         case source
-        when File     then new(code: source.read,           origin: source.path)
-        when IO       then new(code: source.readlines.join, origin: IO_IDENTIFIER)
-        when Pathname then new(code: source.read,           origin: source.to_s)
-        when String   then new(code: source,                origin: STRING_IDENTIFIER)
+        when File then new(code: source.read, origin: source.path)
+        when IO then new(code: source.readlines.join, origin: IO_IDENTIFIER)
+        when Pathname then new(code: source.read, origin: source.to_s)
+        when String then new(code: source, origin: STRING_IDENTIFIER)
         end
       end
 
       def valid_syntax?
-        diagnostics.none? { |diagnostic| [:error, :fatal].include?(diagnostic.level) }
+        diagnostics.none? do |diagnostic|
+          %i[error fatal].include?(diagnostic.level)
+        end
       end
 
       def diagnostics
         parse_if_needed
+
         @diagnostics
       end
 
@@ -62,6 +65,7 @@ module ImproveYourCode
         ast, comments = parser.parse_with_comments(buffer)
 
         comment_map = Parser::Source::Comment.associate(ast, comments) if ast
+
         TreeDresser.new.dress(ast, comment_map)
       end
 

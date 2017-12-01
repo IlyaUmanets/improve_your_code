@@ -183,7 +183,8 @@ module ImproveYourCode
     def inside_new_context(klass, *args)
       new_context = append_new_context(klass, *args)
 
-      orig, self.current_context = current_context, new_context
+      orig = current_context
+      self.current_context = new_context
       yield
       self.current_context = orig
     end

@@ -13,17 +13,23 @@ module ImproveYourCode
           MAX_ALLOWED_PARAMS_KEY => DEFAULT_MAX_ALLOWED_PARAMS,
           SmellConfiguration::OVERRIDES_KEY => {
             'initialize' => { MAX_ALLOWED_PARAMS_KEY => 5 }
-          })
+          }
+        )
       end
 
       def sniff
         count = expression.arg_names.length
+
         return [] if count <= max_allowed_params
-        [smell_warning(
-          context: context,
-          lines: [source_line],
-          message: "has #{count} parameters",
-          parameters: { count: count })]
+
+        [
+          smell_warning(
+            context: context,
+            lines: [source_line],
+            message: "has #{count} parameters",
+            parameters: { count: count }
+          )
+        ]
       end
 
       private

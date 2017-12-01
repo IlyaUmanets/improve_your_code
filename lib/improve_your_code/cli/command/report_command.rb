@@ -30,14 +30,12 @@ module ImproveYourCode
           @reporter ||=
             report_class.new(
               warning_formatter: warning_formatter,
-              report_formatter: Report::Formatter,
-              sort_by_issue_count: sort_by_issue_count,
-              heading_formatter: heading_formatter,
-              progress_formatter: progress_formatter.new(sources.length))
+              progress_formatter: progress_formatter.new(sources.length)
+            )
         end
 
         def report_class
-          Report.report_class(:text)
+          Report.report_class
         end
 
         def warning_formatter
@@ -45,23 +43,15 @@ module ImproveYourCode
         end
 
         def warning_formatter_class
-          Report.warning_formatter_class(:wiki_links)
+          Report.warning_formatter_class
         end
 
         def location_formatter
-          Report.location_formatter(:numbers)
-        end
-
-        def heading_formatter
-          Report.heading_formatter(:quiet)
+          Report.location_formatter
         end
 
         def progress_formatter
-          Report.progress_formatter(:dots)
-        end
-
-        def sort_by_issue_count
-          false
+          Report.progress_formatter
         end
       end
     end

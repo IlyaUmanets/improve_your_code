@@ -13,15 +13,13 @@ module ImproveYourCode
       WARNINGS_COLOR = :red
 
       def initialize(heading_formatter: Formatter::QuietHeadingFormatter,
-                     report_formatter: Formatter,
-                     sort_by_issue_count: false,
                      warning_formatter: Formatter::SimpleWarningFormatter.new,
                      progress_formatter: Formatter::ProgressFormatter::Quiet.new(0))
         @examiners           = []
-        @heading_formatter   = heading_formatter.new(report_formatter)
-        @report_formatter    = report_formatter
+        @report_formatter    = Formatter
+        @heading_formatter   = heading_formatter.new(Formatter)
         @progress_formatter  = progress_formatter
-        @sort_by_issue_count = sort_by_issue_count
+        @sort_by_issue_count = false
         @total_smell_count   = 0
         @warning_formatter   = warning_formatter
       end

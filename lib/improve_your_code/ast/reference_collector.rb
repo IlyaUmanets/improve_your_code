@@ -16,7 +16,7 @@ module ImproveYourCode
       attr_reader :ast
 
       def explicit_self_calls
-        [:self, :super, :zsuper, :ivar, :ivasgn].flat_map do |node_type|
+        %i[self super zsuper ivar ivasgn].flat_map do |node_type|
           ast.each_node(node_type)
         end
       end

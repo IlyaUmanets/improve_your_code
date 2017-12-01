@@ -51,7 +51,7 @@ module ImproveYourCode
       def namespace_module?
         return false if exp.type == :casgn
         children = exp.direct_children
-        children.any? && children.all? { |child| [:casgn, :class, :module].include? child.type }
+        children.any? && children.all? { |child| %i[casgn class module].include? child.type }
       end
 
       def track_visibility(visibility, names)

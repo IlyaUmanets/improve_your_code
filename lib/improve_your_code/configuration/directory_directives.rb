@@ -27,9 +27,9 @@ module ImproveYourCode
       private
 
       def best_match_for(source_base_dir)
-        keys.
-          select { |pathname| source_base_dir.to_s.match(/#{Regexp.escape(pathname.to_s)}/) }.
-          max_by { |pathname| pathname.to_s.length }
+        keys
+          .select { |pathname| source_base_dir.to_s.match(/#{Regexp.escape(pathname.to_s)}/) }
+          .max_by { |pathname| pathname.to_s.length }
       end
 
       def error_message_for_invalid_smell_type(klass)

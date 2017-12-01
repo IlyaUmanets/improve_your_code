@@ -4,54 +4,27 @@ require_relative 'base_detector'
 
 module ImproveYourCode
   module SmellDetectors
-    #
-    # An Uncommunicative Name is a name that doesn't communicate its intent
-    # well enough.
-    #
-    # Poor names make it hard for the reader to build a mental picture
-    # of what's going on in the code. They can also be mis-interpreted;
-    # and they hurt the flow of reading, because the reader must slow
-    # down to interpret the names.
-    #
-    # Currently +UncommunicativeName+ checks for:
-    #
-    # * single-character names
-    # * any name ending with a number
-    # * camelCaseVariableNames
-    #
-    # See {file:docs/Uncommunicative-Variable-Name.md} for details.
-    #
     class UncommunicativeVariableName < BaseDetector
-      # The name of the config field that lists the regexps of
-      # smelly names to be reported.
       REJECT_KEY = 'reject'.freeze
       DEFAULT_REJECT_SET = [
         /^.$/, # single-character names
         /[0-9]$/,  # any name ending with a number
         /[A-Z]/    # camelCaseVariableNames
       ].freeze
-
-      # The name of the config field that lists the specific names that are
-      # to be treated as exceptions; these names will not be reported as
-      # uncommunicative.
       ACCEPT_KEY = 'accept'.freeze
       DEFAULT_ACCEPT_SET = [/^_$/].freeze
 
       def self.default_config
         super.merge(
           REJECT_KEY => DEFAULT_REJECT_SET,
-          ACCEPT_KEY => DEFAULT_ACCEPT_SET)
+          ACCEPT_KEY => DEFAULT_ACCEPT_SET
+        )
       end
 
       def self.contexts
-        [:module, :class, :def, :defs]
+        %i[module class def defs]
       end
 
-      #
-      # Checks the given +context+ for uncommunicative names.
-      #
-      # @return [Array<SmellWarning>]
-      #
       def sniff
         variable_names.select do |name, _lines|
           uncommunicative_variable_name?(name)
@@ -60,7 +33,8 @@ module ImproveYourCode
             context: context,
             lines: lines,
             message: "has the variable name '#{name}'",
-            parameters: { name: name.to_s })
+            parameters: { name: name.to_s }
+          )
         end
       end
 
@@ -80,29 +54,41 @@ module ImproveYourCode
       end
 
       def acceptable_name?(name)
-        Array(accept_names).any? { |accept_pattern| name.match accept_pattern } ||
-          Array(reject_names).none? { |reject_pattern| name.match reject_pattern }
+        any_accept_names?(name) || any_reject_names?(name)
+      end
+
+      def any_accept_names?(name)
+        Array(accept_names).any? { |accept_pattern| name.match accept_pattern }
+      end
+
+      def any_reject_names?(name)
+        Array(reject_names).none? { |reject_pattern| name.match reject_pattern }
       end
 
       def variable_names
         result = Hash.new { |hash, key| hash[key] = [] }
+
         find_assignment_variable_names(result)
         find_block_argument_variable_names(result)
+
         result
       end
 
       def find_assignment_variable_names(accumulator)
-        assignment_nodes = expression.each_node(:lvasgn, [:class, :module, :defs, :def])
+        assignment_nodes = expression.each_node(
+          :lvasgn, %i[class module defs def]
+        )
 
         case expression.type
         when :class, :module
-          assignment_nodes += expression.each_node(:ivasgn, [:class, :module])
+          assignment_nodes += expression.each_node(:ivasgn, %i[class module])
         end
 
-        assignment_nodes.each { |asgn| accumulator[asgn.children.first].push(asgn.line) }
+        assignment_nodes.each do |asgn|
+          accumulator[asgn.children.first].push(asgn.line)
+        end
       end
 
-      # :improve_your_code:TooManyStatements: { max_statements: 6 }
       def find_block_argument_variable_names(accumulator)
         arg_search_exp = case expression.type
                          when :class, :module
@@ -112,7 +98,9 @@ module ImproveYourCode
                          end
 
         return unless arg_search_exp
-        args_nodes = arg_search_exp.each_node(:args, [:class, :module, :defs, :def])
+
+        args_nodes = arg_search_exp
+                     .each_node(:args, %i[class module defs def])
 
         args_nodes.each do |args_node|
           recursively_record_variable_names(accumulator, args_node)
@@ -130,7 +118,6 @@ module ImproveYourCode
         end
       end
 
-      # :improve_your_code:UtilityFunction
       def record_variable_name(exp, symbol, accumulator)
         varname = symbol.to_s.sub(/^\*/, '')
         return if varname == ''
