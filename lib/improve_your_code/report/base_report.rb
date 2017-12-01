@@ -13,8 +13,8 @@ module ImproveYourCode
       WARNINGS_COLOR = :red
 
       def initialize(heading_formatter: Formatter::QuietHeadingFormatter,
-                     warning_formatter: Formatter::SimpleWarningFormatter.new,
-                     progress_formatter: Formatter::ProgressFormatter::Quiet.new(0))
+        warning_formatter: Formatter::SimpleWarningFormatter.new,
+        progress_formatter: Formatter::ProgressFormatter::Quiet.new(0))
         @examiners           = []
         @report_formatter    = Formatter
         @heading_formatter   = heading_formatter.new(Formatter)
@@ -49,7 +49,7 @@ module ImproveYourCode
       private
 
       attr_reader :examiners, :heading_formatter, :report_formatter,
-                  :sort_by_issue_count, :warning_formatter, :progress_formatter
+        :sort_by_issue_count, :warning_formatter, :progress_formatter
     end
   end
 end

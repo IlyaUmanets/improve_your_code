@@ -31,6 +31,9 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   Enabled: false
 
+Documentation:
+  Enabled: false
+
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%':  ()

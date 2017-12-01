@@ -14,7 +14,7 @@ module ImproveYourCode
       children = sexp.children.map { |child| dress(child, comment_map) }
       comments = comment_map[sexp]
       klass_map.klass_for(type).new(type, children,
-                                    location: sexp.loc, comments: comments)
+        location: sexp.loc, comments: comments)
     end
 
     private

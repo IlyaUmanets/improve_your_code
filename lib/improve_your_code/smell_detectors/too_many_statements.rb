@@ -5,7 +5,7 @@ require_relative 'base_detector'
 module ImproveYourCode
   module SmellDetectors
     class TooManyStatements < BaseDetector
-      MAX_ALLOWED_STATEMENTS_KEY = 'max_statements'.freeze
+      MAX_ALLOWED_STATEMENTS_KEY = 'max_statements'
       DEFAULT_MAX_STATEMENTS = 5
 
       def self.default_config

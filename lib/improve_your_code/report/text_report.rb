@@ -42,7 +42,7 @@ module ImproveYourCode
         result = heading_formatter.header(examiner)
         if examiner.smelly?
           formatted_list = report_formatter.format_list(examiner.smells,
-                                                        formatter: warning_formatter)
+            formatter: warning_formatter)
           result += ":\n#{formatted_list}"
         end
         result

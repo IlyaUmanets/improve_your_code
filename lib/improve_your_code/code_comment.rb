@@ -16,9 +16,9 @@ module ImproveYourCode
                           )?
                          /x
     SANITIZE_REGEX                 = /(#|\n|\s)+/ # Matches '#', newlines and > 1 whitespaces.
-    DISABLE_DETECTOR_CONFIGURATION = '{ enabled: false }'.freeze
+    DISABLE_DETECTOR_CONFIGURATION = '{ enabled: false }'
     MINIMUM_CONTENT_LENGTH         = 2
-    LEGACY_SEPARATOR               = ':'.freeze
+    LEGACY_SEPARATOR               = ':'
 
     attr_reader :config
 
@@ -30,7 +30,7 @@ module ImproveYourCode
 
       @original_comment.scan(CONFIGURATION_REGEX) do |detector_name, _option_string, options|
         @config.merge! detector_name => YAML.safe_load(options || DISABLE_DETECTOR_CONFIGURATION,
-                                                       [Regexp])
+          [Regexp])
       end
     end
 
@@ -44,9 +44,9 @@ module ImproveYourCode
 
     def sanitized_comment
       @sanitized_comment ||= original_comment
-                             .gsub(CONFIGURATION_REGEX, '')
-                             .gsub(SANITIZE_REGEX, ' ')
-                             .strip
+        .gsub(CONFIGURATION_REGEX, '')
+        .gsub(SANITIZE_REGEX, ' ')
+        .strip
     end
   end
 end

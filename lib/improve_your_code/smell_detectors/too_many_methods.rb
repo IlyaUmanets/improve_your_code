@@ -5,7 +5,7 @@ require_relative 'base_detector'
 module ImproveYourCode
   module SmellDetectors
     class TooManyMethods < BaseDetector
-      MAX_ALLOWED_METHODS_KEY = 'max_methods'.freeze
+      MAX_ALLOWED_METHODS_KEY = 'max_methods'
       DEFAULT_MAX_METHODS = 5
 
       def self.contexts

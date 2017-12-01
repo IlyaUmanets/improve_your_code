@@ -5,7 +5,7 @@ require_relative 'base_detector'
 module ImproveYourCode
   module SmellDetectors
     class TooManyConstants < BaseDetector
-      MAX_ALLOWED_CONSTANTS_KEY = 'max_constants'.freeze
+      MAX_ALLOWED_CONSTANTS_KEY = 'max_constants'
       DEFAULT_MAX_CONSTANTS = 5
       IGNORED_NODES = %i[module class].freeze
 
@@ -32,7 +32,7 @@ module ImproveYourCode
 
       def constants_count
         context.each_node(:casgn, IGNORED_NODES)
-               .delete_if(&:defines_module?).length
+          .delete_if(&:defines_module?).length
       end
 
       def max_allowed_constants

@@ -5,9 +5,9 @@ require_relative 'base_detector'
 module ImproveYourCode
   module SmellDetectors
     class UncommunicativeModuleName < BaseDetector
-      REJECT_KEY = 'reject'.freeze
+      REJECT_KEY = 'reject'
       DEFAULT_REJECT_PATTERNS = [/^.$/, /[0-9]$/].freeze
-      ACCEPT_KEY = 'accept'.freeze
+      ACCEPT_KEY = 'accept'
       DEFAULT_ACCEPT_PATTERNS = [].freeze
 
       def self.default_config

@@ -5,13 +5,13 @@ require_relative 'base_detector'
 module ImproveYourCode
   module SmellDetectors
     class UncommunicativeVariableName < BaseDetector
-      REJECT_KEY = 'reject'.freeze
+      REJECT_KEY = 'reject'
       DEFAULT_REJECT_SET = [
         /^.$/, # single-character names
         /[0-9]$/,  # any name ending with a number
         /[A-Z]/    # camelCaseVariableNames
       ].freeze
-      ACCEPT_KEY = 'accept'.freeze
+      ACCEPT_KEY = 'accept'
       DEFAULT_ACCEPT_SET = [/^_$/].freeze
 
       def self.default_config
@@ -100,7 +100,7 @@ module ImproveYourCode
         return unless arg_search_exp
 
         args_nodes = arg_search_exp
-                     .each_node(:args, %i[class module defs def])
+          .each_node(:args, %i[class module defs def])
 
         args_nodes.each do |args_node|
           recursively_record_variable_names(accumulator, args_node)

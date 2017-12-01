@@ -27,7 +27,7 @@ module ImproveYourCode
       end
 
       def line
-        loc && loc.line
+        loc&.line
       end
 
       def each_node(target_type, ignoring = [], &blk)

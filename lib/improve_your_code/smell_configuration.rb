@@ -2,8 +2,8 @@
 
 module ImproveYourCode
   class SmellConfiguration
-    ENABLED_KEY = 'enabled'.freeze
-    OVERRIDES_KEY = 'overrides'.freeze
+    ENABLED_KEY = 'enabled'
+    OVERRIDES_KEY = 'overrides'
 
     def initialize(hash)
       @options = hash

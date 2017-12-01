@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'lib/improve_your_code/version')
 
 Gem::Specification.new do |s|

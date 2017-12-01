@@ -28,8 +28,7 @@ module ImproveYourCode
         end
 
         def module_creation_receiver?
-          receiver &&
-            receiver.type == :const &&
+          receiver&.type == :const &&
             %i[Class Struct].include?(receiver.simple_name)
         end
 

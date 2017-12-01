@@ -9,7 +9,7 @@ module ImproveYourCode
     class BaseDetector
       attr_reader :config
 
-      EXCLUDE_KEY = 'exclude'.freeze
+      EXCLUDE_KEY = 'exclude'
 
       def initialize(context: nil)
         @config = SmellConfiguration.new(self.class.default_config)
@@ -57,11 +57,11 @@ module ImproveYourCode
         context = options.fetch(:context)
         exp = context.exp
         SmellWarning.new(self,
-                         source: exp.source,
-                         context: context.full_name,
-                         lines: options.fetch(:lines),
-                         message: options.fetch(:message),
-                         parameters: options.fetch(:parameters, {}))
+          source: exp.source,
+          context: context.full_name,
+          lines: options.fetch(:lines),
+          message: options.fetch(:message),
+          parameters: options.fetch(:parameters, {}))
       end
 
       def source_line
@@ -98,7 +98,7 @@ module ImproveYourCode
 
         def valid_detector?(detector)
           descendants.map { |descendant| descendant.to_s.split('::').last }
-                     .include?(detector)
+            .include?(detector)
         end
 
         def to_detector(detector_name)

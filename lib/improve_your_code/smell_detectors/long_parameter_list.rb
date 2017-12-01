@@ -5,7 +5,7 @@ require_relative 'base_detector'
 module ImproveYourCode
   module SmellDetectors
     class LongParameterList < BaseDetector
-      MAX_ALLOWED_PARAMS_KEY = 'max_params'.freeze
+      MAX_ALLOWED_PARAMS_KEY = 'max_params'
       DEFAULT_MAX_ALLOWED_PARAMS = 3
 
       def self.default_config

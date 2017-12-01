@@ -13,8 +13,8 @@ ImproveYourCode::AST::Builder.emit_lambda = true
 module ImproveYourCode
   module Source
     class SourceCode
-      IO_IDENTIFIER     = 'STDIN'.freeze
-      STRING_IDENTIFIER = 'string'.freeze
+      IO_IDENTIFIER     = 'STDIN'
+      STRING_IDENTIFIER = 'string'
 
       attr_reader :origin
 

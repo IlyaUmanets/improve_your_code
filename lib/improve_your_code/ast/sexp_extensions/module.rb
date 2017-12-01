@@ -104,7 +104,7 @@ module ImproveYourCode
 
         def defines_module?
           call = constant_definition
-          call && call.module_creation_call?
+          call&.module_creation_call?
         end
 
         # Sometimes we assign classes like:

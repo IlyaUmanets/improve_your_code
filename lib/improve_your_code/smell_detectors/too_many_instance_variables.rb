@@ -5,7 +5,7 @@ require_relative 'base_detector'
 module ImproveYourCode
   module SmellDetectors
     class TooManyInstanceVariables < BaseDetector
-      MAX_ALLOWED_IVARS_KEY = 'max_instance_variables'.freeze
+      MAX_ALLOWED_IVARS_KEY = 'max_instance_variables'
       DEFAULT_MAX_IVARS = 4
 
       def self.contexts
