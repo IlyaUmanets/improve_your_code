@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'context/attribute_context'
-require_relative 'context/class_context'
 require_relative 'context/ghost_context'
 require_relative 'context/method_context'
 require_relative 'context/module_context'
@@ -49,9 +48,7 @@ module ImproveYourCode
     alias process_class process_module
 
     def process_sclass(exp, _parent)
-      inside_new_context(Context::GhostContext, exp) do
-        process(exp)
-      end
+      inside_new_context(Context::GhostContext, exp) { process(exp) }
     end
 
     def process_casgn(exp, parent)

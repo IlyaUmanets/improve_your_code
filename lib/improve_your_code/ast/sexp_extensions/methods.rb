@@ -28,14 +28,6 @@ module ImproveYourCode
         def ends_with_bang?
           name[-1] == '!'
         end
-
-        def body_nodes(types, ignoring = [])
-          if body
-            body.find_nodes(types, ignoring)
-          else
-            []
-          end
-        end
       end
 
       # Utility methods for :def nodes.
@@ -56,10 +48,6 @@ module ImproveYourCode
 
         def full_name(outer)
           [outer, name].reject(&:empty?).join('#')
-        end
-
-        def depends_on_instance?
-          ReferenceCollector.new(self).num_refs_to_self > 0
         end
       end
 
@@ -86,10 +74,6 @@ module ImproveYourCode
         def full_name(outer)
           prefix = outer == '' ? '' : "#{outer}#"
           "#{prefix}#{receiver.name}.#{name}"
-        end
-
-        def depends_on_instance?
-          false
         end
       end
     end

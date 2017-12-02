@@ -3,7 +3,6 @@
 module ImproveYourCode
   module AST
     module SexpExtensions
-      # Base module for utility methods for argument nodes.
       module ArgNodeBase
         def name
           children.first
@@ -34,17 +33,14 @@ module ImproveYourCode
         end
       end
 
-      # Utility methods for :arg nodes.
       module ArgNode
         include ArgNodeBase
       end
 
-      # Utility methods for :kwarg nodes.
       module KwargNode
         include ArgNodeBase
       end
 
-      # Utility methods for :optarg nodes.
       module OptargNode
         include ArgNodeBase
 
@@ -53,7 +49,6 @@ module ImproveYourCode
         end
       end
 
-      # Utility methods for :kwoptarg nodes.
       module KwoptargNode
         include ArgNodeBase
 
@@ -62,7 +57,6 @@ module ImproveYourCode
         end
       end
 
-      # Utility methods for :blockarg nodes.
       module BlockargNode
         include ArgNodeBase
 
@@ -71,7 +65,6 @@ module ImproveYourCode
         end
       end
 
-      # Utility methods for :restarg nodes.
       module RestargNode
         include ArgNodeBase
 
@@ -80,7 +73,6 @@ module ImproveYourCode
         end
       end
 
-      # Utility methods for :kwrestarg nodes.
       module KwrestargNode
         include ArgNodeBase
 
@@ -89,7 +81,6 @@ module ImproveYourCode
         end
       end
 
-      # Utility methods for :shadowarg nodes.
       module ShadowargNode
         include ArgNodeBase
       end

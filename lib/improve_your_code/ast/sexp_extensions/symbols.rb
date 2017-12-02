@@ -8,10 +8,6 @@ module ImproveYourCode
         def name
           children.first
         end
-
-        def full_name(outer)
-          "#{outer}##{name}"
-        end
       end
     end
   end

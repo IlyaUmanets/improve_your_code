@@ -2,6 +2,8 @@
 
 require_relative 'code_context'
 require_relative 'singleton_method_context'
+require_relative 'module_context'
+
 
 module ImproveYourCode
   module Context

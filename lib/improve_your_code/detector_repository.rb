@@ -5,13 +5,9 @@ require_relative 'smell_detectors/base_detector'
 
 module ImproveYourCode
   class DetectorRepository
-    def self.smell_types
+    def self.eligible_smell_types
       ImproveYourCode::SmellDetectors::BaseDetector
         .descendants.sort_by(&:name)
-    end
-
-    def self.eligible_smell_types
-      smell_types
     end
 
     def initialize(smell_types: self.class.smell_types)

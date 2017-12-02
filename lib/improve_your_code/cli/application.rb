@@ -6,13 +6,14 @@ require_relative 'command/report_command'
 module ImproveYourCode
   module CLI
     class Application
-      def initialize
-        @command = Command::ReportCommand.new(sources: sources)
-      end
-
       def execute
         enable_rainbow
+
+        command = Command::ReportCommand.new(sources: sources)
+
         command.execute
+
+        true
       end
 
       private
@@ -20,14 +21,10 @@ module ImproveYourCode
       attr_reader :command
 
       def enable_rainbow
-        Rainbow.enabled = $stdout.tty?
+        Rainbow.enabled = true
       end
 
       def sources
-        working_directory_as_source
-      end
-
-      def working_directory_as_source
         Source::SourceLocator.new(['.']).sources
       end
     end

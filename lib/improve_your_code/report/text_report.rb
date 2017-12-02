@@ -1,29 +1,54 @@
 # frozen_string_literal: true
 
-require_relative 'base_report'
+require 'json'
+require 'pathname'
+require 'rainbow'
+
+require_relative 'formatter'
 
 module ImproveYourCode
   module Report
-    class TextReport < BaseReport
-      def initialize(*args)
-        super(*args)
+    class TextReport
+      NO_WARNINGS_COLOR = :green
+      WARNINGS_COLOR = :red
 
-        print progress_formatter.header
+      def initialize(warning_formatter, progress_formatter)
+        @examiners           = []
+        @total_smell_count   = 0
+        @report_formatter    = Formatter
+        @heading_formatter   = Formatter::QuietHeadingFormatter.new(Formatter)
+        @progress_formatter  = progress_formatter
+        @warning_formatter   = warning_formatter
       end
 
       def add_examiner(examiner)
         print progress_formatter.progress examiner
-        super(examiner)
+        
+        self.total_smell_count += examiner.smells_count
+
+        examiners << examiner
       end
 
       def show
-        sort_examiners if smells?
-        print progress_formatter.footer
+        print "\n\n"
+
         display_summary
-        display_total_smell_count
+
+        print total_smell_count_message
       end
 
+      def smells?
+        total_smell_count > 0
+      end
+
+      protected
+
+      attr_accessor :total_smell_count
+
       private
+
+      attr_reader :examiners, :heading_formatter, :report_formatter,
+        :warning_formatter, :progress_formatter
 
       def smell_summaries
         examiners.map { |ex| summarize_single_examiner(ex) }.reject(&:empty?)
@@ -31,11 +56,6 @@ module ImproveYourCode
 
       def display_summary
         smell_summaries.each { |smell| puts smell }
-      end
-
-      def display_total_smell_count
-        return unless examiners.size > 1
-        print total_smell_count_message
       end
 
       def summarize_single_examiner(examiner)
@@ -46,10 +66,6 @@ module ImproveYourCode
           result += ":\n#{formatted_list}"
         end
         result
-      end
-
-      def sort_examiners
-        examiners.sort_by!(&:smells_count).reverse! if sort_by_issue_count
       end
 
       def total_smell_count_message

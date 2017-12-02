@@ -19,7 +19,8 @@ module ImproveYourCode
       end
 
       def uses_param?(param)
-        (local_nodes(:lvar) + local_nodes(:lvasgn)).find { |node| node.var_name == param.name }
+        (local_nodes(:lvar) + local_nodes(:lvasgn))
+          .find { |node| node.var_name == param.name }
       end
 
       def unused_params

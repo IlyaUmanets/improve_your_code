@@ -2,7 +2,8 @@
 
 require_relative 'base_command'
 require_relative '../../examiner'
-require_relative '../../report'
+require_relative '../../report/text_report'
+require_relative '../../report/formatter'
 
 module ImproveYourCode
   module CLI
@@ -11,7 +12,6 @@ module ImproveYourCode
         def execute
           populate_reporter_with_smells
           reporter.show
-          result_code
         end
 
         private
@@ -22,20 +22,16 @@ module ImproveYourCode
           end
         end
 
-        def result_code
-          reporter.smells? ? 2 : 0
-        end
-
         def reporter
           @reporter ||=
             report_class.new(
-              warning_formatter: warning_formatter,
-              progress_formatter: progress_formatter.new(sources.length)
+              warning_formatter,
+              progress_formatter.new
             )
         end
 
         def report_class
-          Report.report_class
+          Report::TextReport
         end
 
         def warning_formatter
@@ -43,15 +39,15 @@ module ImproveYourCode
         end
 
         def warning_formatter_class
-          Report.warning_formatter_class
+          Report::Formatter::SimpleWarningFormatter
         end
 
         def location_formatter
-          Report.location_formatter
+          Report::Formatter::DefaultLocationFormatter
         end
 
         def progress_formatter
-          Report.progress_formatter
+          Report::Formatter::ProgressFormatter::Dots
         end
       end
     end

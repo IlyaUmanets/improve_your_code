@@ -73,7 +73,7 @@ module ImproveYourCode
       end
 
       def full_name
-        exp.full_name(parent ? parent.full_name : '')
+        exp.full_name('')
       end
 
       def config_for(detector_class)
