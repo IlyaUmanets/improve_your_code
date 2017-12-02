@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative '../lib/improve_your_code'
 require_relative '../lib/improve_your_code/cli/application'
+require 'byebug'
 
 exit ImproveYourCode::CLI::Application.new.execute

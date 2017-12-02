@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'context/attribute_context'
-require_relative 'context/ghost_context'
 require_relative 'context/method_context'
 require_relative 'context/module_context'
 require_relative 'context/root_context'
@@ -47,27 +46,8 @@ module ImproveYourCode
 
     alias process_class process_module
 
-    def process_sclass(exp, _parent)
-      inside_new_context(Context::GhostContext, exp) { process(exp) }
-    end
-
-    def process_casgn(exp, parent)
-      if exp.defines_module?
-        process_module(exp, parent)
-      else
-        process(exp)
-      end
-    end
-
     def process_def(exp, parent)
       inside_new_context(current_context.method_context_class, exp, parent) do
-        increase_statement_count_by(exp.body)
-        process(exp)
-      end
-    end
-
-    def process_defs(exp, parent)
-      inside_new_context(Context::SingletonMethodContext, exp, parent) do
         increase_statement_count_by(exp.body)
         process(exp)
       end
@@ -83,36 +63,6 @@ module ImproveYourCode
       end
     end
 
-    def process_op_asgn(exp, _parent)
-      current_context.record_call_to(exp)
-      process(exp)
-    end
-
-    def process_ivar(exp, _parent)
-      current_context.record_use_of_self
-      process(exp)
-    end
-
-    alias process_ivasgn process_ivar
-
-    def process_self(_, _parent)
-      current_context.record_use_of_self
-    end
-
-    def process_zsuper(_, _parent)
-      current_context.record_use_of_self
-    end
-
-    def process_super(exp, _parent)
-      current_context.record_use_of_self
-      process(exp)
-    end
-
-    def process_block(exp, _parent)
-      increase_statement_count_by(exp.block)
-      process(exp)
-    end
-
     def process_begin(exp, _parent)
       increase_statement_count_by(exp.children)
       decrease_statement_count
@@ -120,50 +70,6 @@ module ImproveYourCode
     end
 
     alias process_kwbegin process_begin
-
-    def process_if(exp, _parent)
-      children = exp.children
-      increase_statement_count_by(children[1])
-      increase_statement_count_by(children[2])
-      decrease_statement_count
-      process(exp)
-    end
-
-    def process_while(exp, _parent)
-      increase_statement_count_by(exp.children[1])
-      decrease_statement_count
-      process(exp)
-    end
-
-    alias process_until process_while
-
-    def process_for(exp, _parent)
-      increase_statement_count_by(exp.children[2])
-      decrease_statement_count
-      process(exp)
-    end
-
-    def process_rescue(exp, _parent)
-      increase_statement_count_by(exp.children.first)
-      decrease_statement_count
-      process(exp)
-    end
-
-    def process_resbody(exp, _parent)
-      increase_statement_count_by(exp.children[1..-1].compact)
-      process(exp)
-    end
-
-    def process_case(exp, _parent)
-      increase_statement_count_by(exp.else_body)
-      decrease_statement_count
-      process(exp)
-    end
-
-    def process_when(exp, _parent)
-      increase_statement_count_by(exp.body)
-      process(exp)
-    end
 
     def context_processor_exists?(name)
       self.class.private_method_defined?(name)

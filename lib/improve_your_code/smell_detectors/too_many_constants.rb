@@ -6,7 +6,7 @@ module ImproveYourCode
   module SmellDetectors
     class TooManyConstants < BaseDetector
       MAX_ALLOWED_CONSTANTS_KEY = 'max_constants'
-      DEFAULT_MAX_CONSTANTS = 5
+      DEFAULT_MAX_CONSTANTS = 3
       IGNORED_NODES = %i[module class].freeze
 
       def self.contexts

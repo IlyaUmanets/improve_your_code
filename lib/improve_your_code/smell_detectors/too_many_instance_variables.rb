@@ -6,7 +6,7 @@ module ImproveYourCode
   module SmellDetectors
     class TooManyInstanceVariables < BaseDetector
       MAX_ALLOWED_IVARS_KEY = 'max_instance_variables'
-      DEFAULT_MAX_IVARS = 4
+      DEFAULT_MAX_IVARS = 3
 
       def self.contexts
         [:class]
@@ -25,11 +25,14 @@ module ImproveYourCode
 
         return [] if count <= max_allowed_ivars
 
+        message = "has at least #{count} instance variables. "\
+                  "We propose to use Facade Pattern"
+
         [
           smell_warning(
             context: context,
             lines: [source_line],
-            message: "has at least #{count} instance variables",
+            message: message,
             parameters: { count: count }
           )
         ]

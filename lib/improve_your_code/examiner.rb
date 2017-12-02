@@ -42,8 +42,6 @@ module ImproveYourCode
     def run
       if source.valid_syntax? && syntax_tree
         examine_tree
-      else
-        SmellDetectors::Syntax.smells_from_source(source)
       end
     end
 

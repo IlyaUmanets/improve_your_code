@@ -6,13 +6,12 @@ module ImproveYourCode
   module SmellDetectors
     class LongParameterList < BaseDetector
       MAX_ALLOWED_PARAMS_KEY = 'max_params'
-      DEFAULT_MAX_ALLOWED_PARAMS = 3
 
       def self.default_config
         super.merge(
-          MAX_ALLOWED_PARAMS_KEY => DEFAULT_MAX_ALLOWED_PARAMS,
+          MAX_ALLOWED_PARAMS_KEY => 3,
           SmellConfiguration::OVERRIDES_KEY => {
-            'initialize' => { MAX_ALLOWED_PARAMS_KEY => 5 }
+            'initialize' => { MAX_ALLOWED_PARAMS_KEY => 3 }
           }
         )
       end
@@ -22,11 +21,14 @@ module ImproveYourCode
 
         return [] if count <= max_allowed_params
 
+        message = "has #{count} parameters. "\
+                  "We propose to use Builder Pattern."
+
         [
           smell_warning(
             context: context,
             lines: [source_line],
-            message: "has #{count} parameters",
+            message: message,
             parameters: { count: count }
           )
         ]

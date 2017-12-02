@@ -11,7 +11,7 @@ module ImproveYourCode
 
       EXCLUDE_KEY = 'exclude'
 
-      def initialize(context: nil)
+      def initialize(context:)
         @config = SmellConfiguration.new(self.class.default_config)
         @context = context
       end
