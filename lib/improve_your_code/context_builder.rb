@@ -26,6 +26,7 @@ module ImproveYourCode
 
     def build(exp, parent_exp = nil)
       context_processor = "process_#{exp.type}"
+
       if context_processor_exists?(context_processor)
         send(context_processor, exp, parent_exp)
       else

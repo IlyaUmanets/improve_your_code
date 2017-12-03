@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'formatter/heading_formatter'
-require_relative 'formatter/location_formatter'
 require_relative 'formatter/progress_formatter'
 require_relative 'formatter/simple_warning_formatter'
 

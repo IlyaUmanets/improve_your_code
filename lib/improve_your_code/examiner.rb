@@ -11,16 +11,12 @@ module ImproveYourCode
       @smell_types = DetectorRepository.eligible_smell_types
     end
 
-    def origin
-      @origin ||= source.origin
-    end
-
     def description
-      origin
+      @description ||= source.origin
     end
 
     def smells
-      @smells ||= run.sort.uniq
+      @smells ||= examine_tree.sort.uniq
     end
 
     def smells_count
@@ -28,7 +24,7 @@ module ImproveYourCode
     end
 
     def smelly?
-      !smells.empty?
+      smells.any?
     end
 
     private
@@ -37,12 +33,6 @@ module ImproveYourCode
 
     def detector_repository
       DetectorRepository.new(smell_types: @smell_types)
-    end
-
-    def run
-      if source.valid_syntax? && syntax_tree
-        examine_tree
-      end
     end
 
     def syntax_tree
