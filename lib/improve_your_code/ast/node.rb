@@ -54,11 +54,7 @@ module ImproveYourCode
       def format_to_ruby
         if location
           lines = location.expression.source.split("\n").map(&:strip)
-          case lines.length
-          when 1 then lines.first
-          when 2 then lines.join('; ')
-          else [lines.first, lines.last].join(' ... ')
-          end
+          lines.first
         else
           to_s
         end

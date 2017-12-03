@@ -7,6 +7,8 @@ Gem::Specification.new do |s|
   s.version = ImproveYourCode::Version::STRING
 
   s.authors = ['Ilya Umanets']
+  s.email = 'ilya.umanets.web@gmail.com'
+  s.homepage = 'https://github.com/IlyaUmanets/improve_your_code'
   s.default_executable = 'improve_your_code'
   s.description =
     'ImproveYourCode is a tool that examines Ruby classes, modules and methods and reports ' \

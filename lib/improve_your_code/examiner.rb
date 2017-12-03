@@ -40,7 +40,7 @@ module ImproveYourCode
     end
 
     def examine_tree
-      ContextBuilder.new(syntax_tree).context_tree.flat_map do |element|
+      ContextBuilder.new(syntax_tree).build.flat_map do |element|
         detector_repository.examine(element)
       end
     end

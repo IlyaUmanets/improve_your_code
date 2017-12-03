@@ -11,20 +11,14 @@ require_relative 'ast/node'
 
 module ImproveYourCode
   class ContextBuilder
-    attr_reader :context_tree
+    attr_reader :syntax_tree
 
     def initialize(syntax_tree)
-      @exp = syntax_tree
-      @current_context = Context::RootContext.new(exp)
-      @context_tree = build(exp)
+      @syntax_tree = syntax_tree
+      @current_context = Context::RootContext.new(syntax_tree)
     end
 
-    private
-
-    attr_accessor :current_context
-    attr_reader :exp
-
-    def build(exp, parent_exp = nil)
+    def build(exp = syntax_tree, parent_exp = nil)
       context_processor = "process_#{exp.type}"
 
       if context_processor_exists?(context_processor)
@@ -32,8 +26,13 @@ module ImproveYourCode
       else
         process exp
       end
+
       current_context
     end
+
+    private
+
+    attr_accessor :current_context
 
     def process(exp)
       exp.children.grep(AST::Node).each { |child| build(child, exp) }
